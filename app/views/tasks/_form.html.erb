@@ -1,0 +1,39 @@
+<%= form_with(model: [@task.project, @task] ) do |f| %>
+  <% if @task.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
+
+      <ul>
+      <% @task.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= f.hidden_field :status, value: 'not-started' %>
+
+  <div class="input-group">
+    
+    <%= f.text_field :name, class: 'form-control', placeholder: 'Enter Task name' %>
+    <div class="input-group-append">
+        <%= f.submit class: 'btn btn-success' %>
+        </div>
+    </div>    
+  </div>
+<% end %>
+<h4>Tasks</h4>
+<% @project.tasks.each do |task| %>
+  <% if task.persisted? %>
+  <div class="card">
+  <div class="card-body">
+  <span><%= task.status %></span>
+    <h5>
+    <%= link_to 'Edit', edit_project_task_path(task.project, task), class: 'btn btn-warning' %>
+        <%= link_to 'Destroy', [task.project, task], method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn bt-danger' %>
+      <%= task.name %>
+    </h5>
+   
+  </div>
+  </div>
+  <% end %>
+  <% end %>
